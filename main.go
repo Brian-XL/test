@@ -2,28 +2,30 @@ package main
 
 import "fmt"
 
-type Printer interface {
-	Print()
+type PayMethod interface {
+	Pay(int)
 }
 
-type Book struct {
-	name string
+type CreditCard struct {
+	balance int
+	limit   int
 }
 
-func (b Book) Print() {
-	fmt.Println("Book:", b.name)
+func (c *CreditCard) Pay(amount int) {
+	if c.balance+amount > c.limit {
+		fmt.Println("余额不足: ", c.limit-c.balance)
+		return
+	}
+	c.balance += amount
+	fmt.Println("支付成功，消费: ", amount)
+	fmt.Println("当前余额: ", c.limit-c.balance)
 }
 
 func main() {
-	var p Printer = Book{"Golang"}
+	c := CreditCard{balance: 100, limit: 1000}
+	c.Pay(200)
 
-	p.Print()
+	var p PayMethod = &c
+	fmt.Println(p)
 
-	b, ok := p.(Book) //type assertion
-
-	if ok {
-		fmt.Println("Book:", b.name)
-	} else {
-		fmt.Println("Not a book")
-	}
 }

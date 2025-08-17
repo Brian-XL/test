@@ -9,8 +9,10 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/exercises/exercise_1.go",
-            "cwd": "${workspaceFolder}/exercises",
+            // "program": "${workspaceFolder}/exercises/exercise_1.go",
+            // "cwd": "${workspaceFolder}/exercises",
+            "program":"${workspaceFolder}/main.go",
+            "cwd": "${workspaceFolder}",
             "env": {},
             "args": []
             
