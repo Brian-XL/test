@@ -94,6 +94,11 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
+
+	mysqlx "test/exercises/d4_database"
 )
 
 type User struct {
@@ -103,7 +108,7 @@ type User struct {
 	Birthday time.Time
 }
 
-func main() {
+func DBTest() {
 	dsn := "host=localhost user=postgres password=postgres dbname=testdb port=5432 sslmode=disable TimeZone=Asia/Shanghai"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -132,4 +137,21 @@ func main() {
 		fmt.Println(v)
 	}
 
+}
+
+func main() {
+	dsn := "host=localhost user=postgres password=postgres dbname=testdb port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	db, err := sqlx.Connect("postgres", dsn)
+
+	if err != nil {
+		log.Fatal("connect to db failed", err)
+		return
+	}
+	defer db.Close()
+
+	//mysqlx.SearchRows(db)
+
+	//mysqlx.HighestSalary(db)
+
+	mysqlx.FindBooks(db)
 }
