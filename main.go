@@ -95,10 +95,9 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 
-	mysqlx "test/exercises/d4_database"
+	mygorm "test/exercises/d4_database"
 )
 
 type User struct {
@@ -136,22 +135,17 @@ func DBTest() {
 	for _, v := range users {
 		fmt.Println(v)
 	}
-
 }
 
 func main() {
 	dsn := "host=localhost user=postgres password=postgres dbname=testdb port=5432 sslmode=disable TimeZone=Asia/Shanghai"
-	db, err := sqlx.Connect("postgres", dsn)
+	//mysqlx.InitializeSqlx(dsn)
 
-	if err != nil {
-		log.Fatal("connect to db failed", err)
-		return
-	}
-	defer db.Close()
+	db, _ := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	//mygorm.InitializeGorm(db)
+	//mygorm.SearchAssociation(db)
+	//mygorm.MostCommentsPost(db)
 
-	//mysqlx.SearchRows(db)
-
-	//mysqlx.HighestSalary(db)
-
-	mysqlx.FindBooks(db)
+	//mygorm.CreatePost(db)
+	mygorm.DeleteComment(db)
 }

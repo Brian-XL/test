@@ -2,10 +2,27 @@ package d4_database
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
+
+func InitializeSqlx(dsn string) {
+	db, err := sqlx.Connect("postgres", dsn)
+
+	if err != nil {
+		log.Fatal("connect to db failed", err)
+		return
+	}
+	defer db.Close()
+
+	SearchRows(db)
+
+	HighestSalary(db)
+
+	FindBooks(db)
+}
 
 type Employee struct {
 	Id         uint   `db:"id"`
